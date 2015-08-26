@@ -12,10 +12,11 @@ class ChoiceInline(admin.TabularInline):
 
 class PollAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['question']})
+        (None, {'fields': ['question']}),
         ('Date information',{'fields': ['pub_date'], 'classes': ['collapse']})
     ]
     inlines = [ChoiceInline]
 
+from polls.models import Polls
 admin.site.register(Poll, PollAdmin)
 
