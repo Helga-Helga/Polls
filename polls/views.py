@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views import generic
 from .models import Choice, Question
+
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
@@ -21,14 +22,21 @@ class DetailView(generic.DetailView):
     template_name = "polls/detail.html"
 
     def get_queryset(self):
-        """
-        Excludes any question that aren't published yet.
-        """
+
+        #Excludes any question that aren't published yet.
+
         return Question.objects.filter(pub_date__lte=timezone.now())
+
+    def detail(request, question_id):
+        return HttpResponse("You're looking at the questio %s. " % question_id)
 
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
+
+    def results(request, question_id):
+        response="You're looking at the results of question %s."
+        return HttpResponse(response % question_id)
 
     def vote(request, question_id):
         p=get_object_or_404(Question, pk=question_id)
@@ -43,3 +51,5 @@ class ResultsView(generic.DetailView):
             selected_choice.votes +=1
             selected_choice.save()
             return HttpResponseRedirect(reverse('polls:results', args=(p.id, )))
+
+
