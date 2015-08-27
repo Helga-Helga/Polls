@@ -27,9 +27,6 @@ class DetailView(generic.DetailView):
 
         return Question.objects.filter(pub_date__lte=timezone.now())
 
-    def detail(request, question_id):
-        return HttpResponse("You're looking at the questio %s. " % question_id)
-
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
