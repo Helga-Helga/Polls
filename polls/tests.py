@@ -55,7 +55,7 @@ class QuestionViewTests(TestCase):
         self.assertContains(response, "No polls are available.")
         self.assertQuerysetEqual(response.context['latest_question_list'], [])
 
-    def text_index_view_with_a_past_question(self):
+    def test_index_view_with_a_past_question(self):
         """
         Questions with a pub_date in the past should be displayed on the index page.
         """
@@ -72,7 +72,7 @@ class QuestionViewTests(TestCase):
         self.assertContains(response, "No polls are available.", status_code=200)
         self.assertQuerysetEqual(response.context['latest_question_list'], [])
 
-    def test_insex_view_with_future_question_and_past_question(self):
+    def test_index_view_with_future_question_and_past_question(self):
         """
         Even if both past and future questions exist, only past questions should be displayed.
         """
