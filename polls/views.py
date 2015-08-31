@@ -1,13 +1,14 @@
 # Create your views here.
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views import generic
+from django.template import RequestContext, loader
 from .models import Choice, Question
-
+"""
 class IndexView(generic.ListView):
     model = Question
     template_name = "polls/index.html"
@@ -31,8 +32,9 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
-
+"""
 def vote(request, question_id):
+    """
     p=get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = p.choice_set.get(pk=request.POST['choice'])
@@ -45,5 +47,18 @@ def vote(request, question_id):
         selected_choice.votes +=1
         selected_choice.save()
         return HttpResponseRedirect(reverse('polls:results', args=(p.id, )))
+    """
+    return HttpResponse("You're voting on question %s." % question_id)
 
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    context = {'latest_question_list': latest_question_list,}
+    return render(request, 'polls/index.html', context)
 
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/detail.html', {'question': question})
+
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
