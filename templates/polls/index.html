@@ -1,4 +1,4 @@
-{% load statisticfiles %}
+{% load staticfiles %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
 
@@ -14,7 +14,7 @@
 
     </ul>
 
-{% esle %}
+{% else %}
 
     <p>No polls are available.</p>
 {% endif %}
